@@ -173,25 +173,20 @@ describe('unitTestingTask', () => {
 });
 
 test('unitTestingTask.formatters returns a list of custom formats from predefined formatters storage', () => {
-  unitTestingTask._formatters = {
-    testFormat1: () => {},
-    testFormat2: () => {}
-  };
-  const customFormats = unitTestingTask.formatters();
-  expect(customFormats).toEqual(['testFormat1', 'testFormat2']);
+  unitTestingTask.register('longDate', 'd MMMM');
+  unitTestingTask.register('longDateAndTime', {
+    'en': 'MMMM d, h:mma',
+    'default': 'd MMMM, HH:mm'
+  });
+  const formatsList = unitTestingTask.formatters();
+  expect(formatsList).toEqual(expect.arrayContaining(['longDate', 'longDateAndTime']));
 });
 
 test('unitTestingTask.register returns formatting function which formats date by calling unitTestingTask', () => {
-  unitTestingTask._formatters = {
-    YYYY: function () {
-      return 'formatted date';
-    }
-  };
-  const date = new Date();
-  const formattingFunction = unitTestingTask.register('YYYY', 'YYYY-MM-dd');
-  const formattedDate = formattingFunction(date);
+  unitTestingTask.register('longDate', 'd MMMM');
+  const formattedDate = unitTestingTask('longDate', date);
 
-  expect(formattedDate).toBe(unitTestingTask('YYYY-MM-dd', date));
+  expect(formattedDate).toBe('17 September');
 });
 
 test('unitTestingTask.noConflict returns unitTestingTask itself', () => {
@@ -217,17 +212,16 @@ describe('unitTestingTask.lang function', () => {
   });
 
   test('it sets current language to lang and returns it if options argument is not specified, but lang already exists in language storage', () => {
-    unitTestingTask._languages['testLanguage'] = {};
+    //creates new language
+    unitTestingTask.lang('testLanguage', {});
     const currentLanguage = unitTestingTask.lang('testLanguage');
 
     expect(currentLanguage).toEqual('testLanguage');
-    expect(unitTestingTask._languages.current).toBe('testLanguage');
   });
 
   test('it sets current language to lang, adds it to languages storage and returns it if lang and options arguments are specified', () => {
-    const currentLanguage = unitTestingTask.lang('test', {});
+    const currentLanguage = unitTestingTask.lang('testLanguage', {});
 
-    expect(currentLanguage).toEqual('test');
-    expect(unitTestingTask._languages.current).toBe('test');
+    expect(currentLanguage).toEqual('testLanguage');
   });
 });

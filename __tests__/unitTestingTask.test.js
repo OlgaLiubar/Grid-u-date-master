@@ -1,7 +1,9 @@
 const unitTestingTask = require("../unitTestingTask");
+const timezonedDate = require('timezoned-date');
 
 describe('unitTestingTask', () => {
   const date = new Date("September 17, 1989 09:07:05:03");
+  const UtcDate = timezonedDate.makeConstructor(0);
 
   test('it throws an error if format argument is not a string', () => {
     expect(unitTestingTask).toThrow("Argument `format` must be a string");
@@ -155,14 +157,14 @@ describe('unitTestingTask', () => {
 
   test('it returns time-zone in ISO8601-compatible basic format if format is ZZ', () => {
     const format = 'ZZ';
-    const formattedDate = unitTestingTask(format, date);
-    expect(formattedDate).toBe('+0200');
+    const formattedDate = unitTestingTask(format, new UtcDate());
+    expect(formattedDate).toBe('+0000');
   });
   
   test('it returns time-zone in ISO8601-compatible extended format if format is Z', () => {
     const format = 'Z';
-    const formattedDate = unitTestingTask(format, date);
-    expect(formattedDate).toBe('+02:00');
+    const formattedDate = unitTestingTask(format, new UtcDate());
+    expect(formattedDate).toBe('+00:00');
   });
 });
 

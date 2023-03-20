@@ -3,9 +3,13 @@
   "version": "0.0.1",
   "description": "Unit testing task",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "jest:debug": "node --nolazy --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --colors --verbose"
   },
   "devDependencies": {
     "jest": "^28.0.2"
+  },
+  "dependencies": {
+    "timezoned-date": "^3.0.2"
   }
 }

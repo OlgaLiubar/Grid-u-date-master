@@ -1,9 +1,13 @@
+// @ts-nocheck
 const unitTestingTask = require("../unitTestingTask");
 const timezonedDate = require('timezoned-date');
 
 describe('unitTestingTask', () => {
-  const date = new Date("September 17, 1989 09:07:05:03");
-  const UtcDate = timezonedDate.makeConstructor(0);
+
+  beforeEach(() => {
+    date = new Date("September 17, 1989 09:07:05:03");
+    UtcDate = timezonedDate.makeConstructor(0);
+  });
 
   test('it throws an error if format argument is not a string', () => {
     expect(unitTestingTask).toThrow("Argument `format` must be a string");
